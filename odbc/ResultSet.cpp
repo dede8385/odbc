@@ -1,5 +1,5 @@
-#include <odbcwapper/ResultSet.h>
-#include <odbcwapper/Exception.h>
+#include <odbc/ResultSet.h>
+#include <odbc/Exception.h>
 
 #include <stdio.h>
 
@@ -16,7 +16,7 @@ ResultSet::ResultSet(SQLHSTMT hStmt) : hStmt_(hStmt), rowCount_(0), colCount_(0)
     retCode = SQLNumResultCols(hStmt_, &colCount_);
     if ((retCode != SQL_SUCCESS) && (retCode != SQL_SUCCESS_WITH_INFO))
     {
-        // Å×Òì³£
+        // æŠ›å¼‚å¸¸
         handleError(__FILE__, __LINE__);
     }
     
@@ -35,7 +35,7 @@ ResultSet::ResultSet(SQLHSTMT hStmt) : hStmt_(hStmt), rowCount_(0), colCount_(0)
         throw ODBC::Exception(errMsg);
     }
     
-    // ÉèÖÃÃ¿Ò»ÁĞµÄÊôĞÔ
+    // è®¾ç½®æ¯ä¸€åˆ—çš„å±æ€§
     char  columnName[128];
     int   columnType;
     int   columnLength;
