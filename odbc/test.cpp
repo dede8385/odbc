@@ -1,11 +1,11 @@
 #include <iostream>
 #include <time.h>
 #include <stdio.h>
-#include <odbcwapper/Connection.h>
-#include <odbcwapper/Exception.h>
-#include <odbcwapper/PreparedStatement.h>
-#include <odbcwapper/ResultSet.h>
-#include <odbcwapper/ConnPoolMgr.h>
+#include <odbc/Connection.h>
+#include <odbc/Exception.h>
+#include <odbc/PreparedStatement.h>
+#include <odbc/ResultSet.h>
+#include <odbc/ConnPoolMgr.h>
 #include <boost/scoped_ptr.hpp>
 
 #define DEFAULT_DBPOOL  "montnetdb"
@@ -52,7 +52,7 @@ void test_insert(short int tinyflag, short int smallflag, int intflag, long bigi
 	    boost::scoped_ptr<PreparedStatement> pstmtPtr(conn->prepareStatement(strSql));
 	    if (pstmtPtr == NULL)
 	    {
-	        cout << "Éú³ÉPreparedStatement¶ÔÏóÊ§°Ü£¡£¡" << endl;
+	        cout << "ç”ŸæˆPreparedStatementå¯¹è±¡å¤±è´¥ï¼ï¼" << endl;
 	        return;
 	    }
     
@@ -86,7 +86,7 @@ void test_select(const string & userId)
 	    boost::scoped_ptr<PreparedStatement> pstmtPtr(conn->prepareStatement(strSql));
 	    if (pstmtPtr == NULL)
 	    {
-	        cout << "Éú³ÉPreparedStatement¶ÔÏóÊ§°Ü£¡£¡" << endl;
+	        cout << "ç”ŸæˆPreparedStatementå¯¹è±¡å¤±è´¥ï¼ï¼" << endl;
 	        return;
 	    }
     
@@ -129,7 +129,7 @@ void test_select2()
 	    boost::scoped_ptr<PreparedStatement> pstmtPtr(conn->prepareStatement(strSql));
 	    if (pstmtPtr == NULL)
 	    {
-	        cout << "Éú³ÉPreparedStatement¶ÔÏóÊ§°Ü£¡£¡" << endl;
+	        cout << "ç”ŸæˆPreparedStatementå¯¹è±¡å¤±è´¥ï¼ï¼" << endl;
 	        return;
 	    }
         
@@ -166,18 +166,18 @@ int main()
     cout << "sizeof(int): " << sizeof(int) << endl;
     cout << "sizeof(long): " << sizeof(long) << endl;
 	
-	// Æô¶¯Êý¾Ý¿â1
+	// å¯åŠ¨æ•°æ®åº“1
 	if (CDBConnPoolMgr::GetInstance().CreateConnPool(DEFAULT_DBPOOL, 
 	        "montnetdb131", "developer", "developer", "select 1", 5, 10) == false)
 	{
-	    cout << "³õÊ¼»¯Á¬½Ó³Ø¹ÜÀíÀàÊ§°Ü1£¡£¡£¡£¡" << endl;
+	    cout << "åˆå§‹åŒ–è¿žæŽ¥æ± ç®¡ç†ç±»å¤±è´¥1ï¼ï¼ï¼ï¼" << endl;
 	    return -1;
 	}
-	// Æô¶¯Êý¾Ý¿â2
+	// å¯åŠ¨æ•°æ®åº“2
 	//if (CDBConnPoolMgr::GetInstance().CreateConnPool(DEFAULT_DBPOOL2, 
 	//        "liang_pt_198", "sa", "123456", "select 1", 5, 10) == false)
 	//{
-	//    cout << "³õÊ¼»¯Á¬½Ó³Ø¹ÜÀíÀàÊ§°Ü2£¡£¡£¡£¡" << endl;
+	//    cout << "åˆå§‹åŒ–è¿žæŽ¥æ± ç®¡ç†ç±»å¤±è´¥2ï¼ï¼ï¼ï¼" << endl;
 	//    return -1;
 	//}
 	for (int i = 1; i <= 1; i++)
@@ -193,7 +193,7 @@ int main()
 	PrintConnPoolInfo();
 	
 	/*
-	// ´æ´¢¹ý³Ì
+	// å­˜å‚¨è¿‡ç¨‹
 	{
 	    const char* strSql = "exec testUsers";
 	    Connection* conn = CDBConnPoolMgr::GetInstance().GetConnFromPool(DEFAULT_DBPOOL);
@@ -201,7 +201,7 @@ int main()
 	    boost::scoped_ptr<PreparedStatement> pstmtPtr(conn->prepareStatement(strSql));
 	    if (pstmtPtr == NULL)
 	    {
-	        cout << "Éú³ÉPreparedStatement¶ÔÏóÊ§°Ü£¡£¡" << endl;
+	        cout << "ç”ŸæˆPreparedStatementå¯¹è±¡å¤±è´¥ï¼ï¼" << endl;
 	        return -1;
 	    }
 	    
