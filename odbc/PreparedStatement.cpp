@@ -1,5 +1,5 @@
-#include <odbcwapper/PreparedStatement.h>
-#include <odbcwapper/Exception.h>
+#include <odbc/PreparedStatement.h>
+#include <odbc/Exception.h>
 
 #include <stdio.h>
 
@@ -18,15 +18,15 @@ PreparedStatement::PreparedStatement(SQLHDBC hDbc, const std::string & strSql, u
     retCode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt_);
     if ((retCode != SQL_SUCCESS) && (retCode != SQL_SUCCESS_WITH_INFO)) 
     {
-        // Å×Òì³£
+        // æŠ›å¼‚å¸¸
         handleError(__FILE__, __LINE__);
     }
     
-    // ÉèÖÃÁĞ°ó¶¨
+    // è®¾ç½®åˆ—ç»‘å®š
     retCode = SQLSetStmtAttr(hStmt_, SQL_ATTR_PARAM_BIND_TYPE, (SQLPOINTER)SQL_PARAM_BIND_BY_COLUMN, 0);
     if ((retCode != SQL_SUCCESS) && (retCode != SQL_SUCCESS_WITH_INFO))
     {
-        // Å×Òì³£
+        // æŠ›å¼‚å¸¸
         handleError(__FILE__, __LINE__);
     }
     
@@ -34,11 +34,11 @@ PreparedStatement::PreparedStatement(SQLHDBC hDbc, const std::string & strSql, u
     retCode = SQLPrepare(hStmt_, (SQLCHAR* )strSql.c_str(), SQL_NTS);
     if ((retCode != SQL_SUCCESS) && (retCode != SQL_SUCCESS_WITH_INFO)) 
     {
-        // Å×Òì³£
+        // æŠ›å¼‚å¸¸
         handleError(__FILE__, __LINE__);
     }
     
-    // ÉèÖÃ°ó¶¨²ÎÊıµÄ´ÎÊı£¨Ä¬ÈÏÎª1£©
+    // è®¾ç½®ç»‘å®šå‚æ•°çš„æ¬¡æ•°ï¼ˆé»˜è®¤ä¸º1ï¼‰
     SQLSetStmtAttr(hStmt_, SQL_ATTR_PARAMSET_SIZE, (SQLPOINTER)paramSetSize_, 0);
 }
 
