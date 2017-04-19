@@ -1,4 +1,4 @@
-#include <odbcwapper/Connection.h>
+#include <odbc/Connection.h>
 
 namespace ODBC
 {
