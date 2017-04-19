@@ -1,28 +1,28 @@
 #ifndef __CONNPOOL_MGR_HH___
 #define __CONNPOOL_MGR_HH___
 
-#include <odbcwapper/Connection.h>
-#include <odbcwapper/Mutex.h>
+#include <odbc/Connection.h>
+#include <odbc/Mutex.h>
 #include <map>
 #include <list>
 
-#define MAX_DBCONNPOOL_SIZE		5					//×î´ó¿É´´½¨µÄÁ¬½Ó³ØÊı
-#define MIN_DBCONN_SIZE			1					//Ã¿¸öÁ¬½Ó³ØÔÊĞí´´½¨µÄ×îĞ¡Á¬½ÓÊı
-#define	DEFAUT_DBCONN_SIZE		5					//Ã¿¸öÁ¬½Ó³ØÄ¬ÈÏ´´½¨µÄÁ¬½ÓÊı
-#define MAX_DBCONN_SIZE			255					//Ã¿¸öÁ¬½Ó³ØÔÊĞí´´½¨µÄ×î´óÁ¬½ÓÊı
-#define MAX_DBCONN_ACTIVE_TM	3*60				//Á¬½Ó¼¤»îÊ±¼ä
-#define DEFAULT_POOLNAME		"DBCONNECTPOOL"		//Ä¬ÈÏÁ¬½Ó³ØÃû³Æ
-#define MIN_WAITCONN_TM			5					//µÈ´ı»ñÈ¡Á¬½ÓµÄ³¬Ê±Öµµ¥Î»Ãë
-#define POOLNAME_ACC			"ACC"				//accÁ¬½Ó³ØÃû
-#define POOLNAME_SVR			"SVR"				//svrÁ¬½Ó³ØÃû
-#define POOLNAME_RPT			"RPT"				//RPT_WAIT_B±íÁ¬½Ó³ØÃû
-#define POOLNAME_MTLVL			"MTLVL"				//MT_LEVEL_QUEUE±íÁ¬½Ó³ØÃû
-#define POOLNAME_MTVFY			"MTVFY"				//MT_VERIFY_WAIT±íÁ¬½Ó³ØÃû
+#define MAX_DBCONNPOOL_SIZE		5					//æœ€å¤§å¯åˆ›å»ºçš„è¿æ¥æ± æ•°
+#define MIN_DBCONN_SIZE			1					//æ¯ä¸ªè¿æ¥æ± å…è®¸åˆ›å»ºçš„æœ€å°è¿æ¥æ•°
+#define	DEFAUT_DBCONN_SIZE		5					//æ¯ä¸ªè¿æ¥æ± é»˜è®¤åˆ›å»ºçš„è¿æ¥æ•°
+#define MAX_DBCONN_SIZE			255					//æ¯ä¸ªè¿æ¥æ± å…è®¸åˆ›å»ºçš„æœ€å¤§è¿æ¥æ•°
+#define MAX_DBCONN_ACTIVE_TM	3*60				//è¿æ¥æ¿€æ´»æ—¶é—´
+#define DEFAULT_POOLNAME		"DBCONNECTPOOL"		//é»˜è®¤è¿æ¥æ± åç§°
+#define MIN_WAITCONN_TM			5					//ç­‰å¾…è·å–è¿æ¥çš„è¶…æ—¶å€¼å•ä½ç§’
+#define POOLNAME_ACC			"ACC"				//accè¿æ¥æ± å
+#define POOLNAME_SVR			"SVR"				//svrè¿æ¥æ± å
+#define POOLNAME_RPT			"RPT"				//RPT_WAIT_Bè¡¨è¿æ¥æ± å
+#define POOLNAME_MTLVL			"MTLVL"				//MT_LEVEL_QUEUEè¡¨è¿æ¥æ± å
+#define POOLNAME_MTVFY			"MTVFY"				//MT_VERIFY_WAITè¡¨è¿æ¥æ± å
 
 struct DBCONN
 {
     ODBC::Connection* conn;
-    time_t lastActive;      // ÉÏ´ÎÊ¹ÓÃµÄÊ±¼ä
+    time_t lastActive;      // ä¸Šæ¬¡ä½¿ç”¨çš„æ—¶é—´
 
     DBCONN()
     {
@@ -44,7 +44,7 @@ struct DBCONN
 
 class CDBConnPoolMgr;
 
-//Êı¾İ¿âÁ¬½Ó³ØÀà
+//æ•°æ®åº“è¿æ¥æ± ç±»
 class CDBConnPool
 {
 	friend class CDBConnPoolMgr;
@@ -53,32 +53,32 @@ public:
     CDBConnPool();
     virtual ~CDBConnPool();
 private:  
-	//³õÊ¼»¯Á¬½Ó³Ø,²¢ÉêÇënMinSize¸öÁ¬½Ó,µ±ËùÓĞÁ¬½Ó¶¼ÉêÇë³É¹¦Ê±·µ»Øtrue.
+	//åˆå§‹åŒ–è¿æ¥æ± ,å¹¶ç”³è¯·nMinSizeä¸ªè¿æ¥,å½“æ‰€æœ‰è¿æ¥éƒ½ç”³è¯·æˆåŠŸæ—¶è¿”å›true.
 	bool InitPool(const char* dbDNSName, 
                   const char* userName, 
                   const char* passWord,
-                  const char* szActiveSql = ""/*¼¤»îÓï¾ä*/, 
+                  const char* szActiveSql = ""/*æ¿€æ´»è¯­å¥*/, 
                   int nMinSize = MIN_DBCONN_SIZE, 
                   int nMaxSize = MAX_DBCONN_SIZE);
                   
-	//´Ó³Ø×ÓÖĞ»ñÈ¡Ò»¸öÁ¬½Ó.¿ÉÖ¸¶¨×î´óµÈ´ıÊ±¼ä(µ¥Î»:s),³¬Ê±½«×Ô¶¯·µ»ØNULL.×î´óµÈ´ıÊ±¼ä×îĞ¡ÖµÎª5s
+	//ä»æ± å­ä¸­è·å–ä¸€ä¸ªè¿æ¥.å¯æŒ‡å®šæœ€å¤§ç­‰å¾…æ—¶é—´(å•ä½:s),è¶…æ—¶å°†è‡ªåŠ¨è¿”å›NULL.æœ€å¤§ç­‰å¾…æ—¶é—´æœ€å°å€¼ä¸º5s
 	ODBC::Connection* GetConnFromPool(int nMaxTimeWait = MIN_WAITCONN_TM);
-	//»ØÊÕÁ¬½Ó
+	//å›æ”¶è¿æ¥
 	void RecycleConn(ODBC::Connection* pConn);
-	//ĞèÒª¼ì²âÁ¬½ÓÊÇ·ñ»¹ÓĞĞ§
+	//éœ€è¦æ£€æµ‹è¿æ¥æ˜¯å¦è¿˜æœ‰æ•ˆ
 	bool IsConnValid(ODBC::Connection* pConn);
-	//»ñÈ¡Á¬½Ó³ØĞÅÏ¢
+	//è·å–è¿æ¥æ± ä¿¡æ¯
 	void GetConnPoolInfo(int& nMinSize, int& nMaxSize, int& nIdle, int& nBusy);
-	//ÖØÖÃÁ¬½Ó³Ø´óĞ¡
+	//é‡ç½®è¿æ¥æ± å¤§å°
 	void ResetConnPoolSize(int nMinSize, int nMaxSize);
 private:
-	//²âÊÔÁ¬½ÓÊÇ·ñ¿ÉÓÃ
+	//æµ‹è¯•è¿æ¥æ˜¯å¦å¯ç”¨
 	bool TestConn(ODBC::Connection* pConn);
-	//Ïú»ÙÁ¬½Ó³Ø,²¢ÊÍ·ÅËùÓĞÁ¬½Ó
+	//é”€æ¯è¿æ¥æ± ,å¹¶é‡Šæ”¾æ‰€æœ‰è¿æ¥
 	void UnInitPool();
-	//ÉêÇëĞÂÁ¬½Ó
+	//ç”³è¯·æ–°è¿æ¥
 	bool ApplayNewConn(DBCONN& conn);
-	//¼¤»î³¤Ê±¼ä¿ÕÏĞµÄÁ¬½Ó
+	//æ¿€æ´»é•¿æ—¶é—´ç©ºé—²çš„è¿æ¥
 	void ActiveIdleConn();
 private:
 	int m_nMinSize;
@@ -92,33 +92,33 @@ private:
     ODBC::MutexLock m_mutex;
 };
 
-//Êı¾İ¿âÁ¬½Ó³Ø¹ÜÀíÀà
+//æ•°æ®åº“è¿æ¥æ± ç®¡ç†ç±»
 class CDBConnPoolMgr
 {
 public:
-    static CDBConnPoolMgr& GetInstance();//µ¥¼şÊµÀı»ñÈ¡½Ó¿Ú
+    static CDBConnPoolMgr& GetInstance();//å•ä»¶å®ä¾‹è·å–æ¥å£
     virtual ~CDBConnPoolMgr();
 public: 
-	//´´½¨Á¬½Ó³Ø²¢Ö¸¶¨³Ø×ÓµÄÃû³Æ,³Ø×ÓÃû³ÆÇø·Ö´óĞ¡Ğ´
+	//åˆ›å»ºè¿æ¥æ± å¹¶æŒ‡å®šæ± å­çš„åç§°,æ± å­åç§°åŒºåˆ†å¤§å°å†™
 	bool CreateConnPool(const char* szPoolName, 
 	                    const char* dbDNSName, 
                         const char* userName, 
                         const char* passWord,
-                        const char* szActiveSql = ""/*¼¤»îÓï¾ä*/, 
+                        const char* szActiveSql = ""/*æ¿€æ´»è¯­å¥*/, 
                         int nMinSize = 5, 
                         int nMaxSize = 50);
     
-	//´ÓÖ¸¶¨µÄ³Ø×ÓÖĞ»ñÈ¡Ò»¸öÁ¬½Ó.¿ÉÖ¸¶¨×î´óµÈ´ıÊ±¼ä(µ¥Î»:s),³¬Ê±½«×Ô¶¯·µ»ØNULL.×î´óµÈ´ıÊ±¼ä×îĞ¡ÖµÎª5s
+	//ä»æŒ‡å®šçš„æ± å­ä¸­è·å–ä¸€ä¸ªè¿æ¥.å¯æŒ‡å®šæœ€å¤§ç­‰å¾…æ—¶é—´(å•ä½:s),è¶…æ—¶å°†è‡ªåŠ¨è¿”å›NULL.æœ€å¤§ç­‰å¾…æ—¶é—´æœ€å°å€¼ä¸º5s
 	ODBC::Connection* GetConnFromPool(const char* szPoolName, int nMaxTimeWait=5);
-	//½«Á¬½Ó»ØÊÕÖÁÖ¸¶¨³Ø×ÓÖĞ
+	//å°†è¿æ¥å›æ”¶è‡³æŒ‡å®šæ± å­ä¸­
 	void RecycleConn(const char* szPoolName, ODBC::Connection* pConn);
-	//ĞèÒª¼ì²âÁ¬½ÓÊÇ·ñ»¹ÓĞĞ§
+	//éœ€è¦æ£€æµ‹è¿æ¥æ˜¯å¦è¿˜æœ‰æ•ˆ
 	bool IsConnValid(const char* szPoolName, ODBC::Connection* pConn);
-	//¼¤»îÁ¬½Ó³ØÖĞµÄ¿ÕÏĞÁ¬½Ó
+	//æ¿€æ´»è¿æ¥æ± ä¸­çš„ç©ºé—²è¿æ¥
 	void ActiveIdleConn();
-	//»ñÈ¡Á¬½Ó³ØĞÅÏ¢
+	//è·å–è¿æ¥æ± ä¿¡æ¯
 	void GetConnPoolInfo(const char* szPoolName, int& nMinSize, int& nMaxSize, int& nIdle, int& nBusy);
-	//ÖØÖÃÁ¬½Ó³Ø´óĞ¡
+	//é‡ç½®è¿æ¥æ± å¤§å°
 	void ResetConnPoolSize(const char* szPoolName, int nMinSize, int nMaxSize);
 
 private:
