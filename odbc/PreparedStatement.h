@@ -6,21 +6,21 @@
 #include <sqlext.h>
 #include <string>
 #include <vector>
-#include <odbcwapper/ResultSet.h>
+#include <odbc/ResultSet.h>
 
 namespace ODBC
 {
 
-// �󶨲�����Ϣ�ṹ
+// 绑定参数信息结构
 struct BIND_PARAM_INFO
 {
-    SQLCHAR*     paramValue; // ���������ַ
-    SQLLEN*      indArr;     // IND����ָ��
-    SQLSMALLINT  sql_c_type; // C�������ͱ�ʶ
-    SQLSMALLINT  sql_type;   // SQL�������ͱ�ʶ
-    SQLLEN       columnSize; // ��Ӧ�ֶε�ʵ�ʳ���
-    SQLLEN       columnMax;  // ��Ӧ�ֶε���󳤶�
-    unsigned int memSize;    // ������ڴ��С
+    SQLCHAR*     paramValue; // 参数缓存地址
+    SQLLEN*      indArr;     // IND数组指针
+    SQLSMALLINT  sql_c_type; // C数据类型标识
+    SQLSMALLINT  sql_type;   // SQL数据类型标识
+    SQLLEN       columnSize; // 对应字段的实际长度
+    SQLLEN       columnMax;  // 对应字段的最大长度
+    unsigned int memSize;    // 申请的内存大小
 
     BIND_PARAM_INFO()
     {
