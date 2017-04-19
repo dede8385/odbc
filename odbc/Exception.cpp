@@ -1,4 +1,4 @@
-#include <odbcwapper/Exception.h>
+#include <odbc/Exception.h>
 
 #include <execinfo.h>
 #include <stdlib.h>
