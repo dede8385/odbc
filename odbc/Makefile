@@ -3,7 +3,7 @@ CXX = g++
 AR = ar
 PLATFORM = OS_LINUX
 PLATFORM_LDFLAGS = -lodbc -pthread -ldl -lrt -lm
-PLATFORM_CFLAGS = -g -D__POSIX__ -DMUDUO_STD_STRING -Wno-write-strings -fPIC
+PLATFORM_CFLAGS = -g -D__POSIX__ -Wno-write-strings -fPIC
 PLATFORM_INCL = -I. -I..
 PLATFORM_LIBDIR = -L/usr/local/lib -L.
 PLATFORM_LIBS = -lodbc_wapper
@@ -39,8 +39,8 @@ $(BINARY_TEST): $(OI_OBJS_TEST)
 	$(CXX) $(PLATFORM_CFLAGS) $(LIB_FLAGS) -o $@ $^ $(PLATFORM_LIBDIR) $(PLATFORM_LDFLAGS) $(PLATFORM_LIBS)
 
 install:
-	mkdir -p $(HOME)/include/odbcwapper/
-	cp -rf *.h $(HOME)/include/odbcwapper/
+	mkdir -p $(HOME)/include/odbc/
+	cp -rf *.h $(HOME)/include/odbc/
 	mv $(STATICLIB_NAME) $(HOME)/lib/
 
 clean:
