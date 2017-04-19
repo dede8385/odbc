@@ -5,7 +5,7 @@
 #include <sql.h>
 #include <sqlext.h>
 #include <string>
-#include "PreparedStatement.h"
+#include <odbc/PreparedStatement.h>
 
 namespace ODBC
 {
